@@ -8,6 +8,7 @@ Run game from **UnclaimedWorldInjector.exe**
 Can run alongside Steam, it will use overlay.
 
 To run with mods from Steam Library, you can add string into **Properties - Launch Options** of the game:
+
 **"_your-path-to-steam_\steamapps\common\Unclaimed World\UnclaimedWorldInjector.exe" %command%**
 
 ---
