@@ -1,3 +1,18 @@
+Clone of TerrariaInjector with some code changes to adapt it for Unclaimed World game. 
+
+To install and use:
+Get **0Harmony.dll** (need one from folder **net35**) from here: **https://github.com/pardeike/Harmony/releases/tag/v2.3.3.0**
+Get this mod and put into **Steam\steamapps\common\Unclaimed World**
+Put dll mods into Mods folder.
+Run game from **UnclaimedWorldInjector.exe**
+Can run alongside Steam, it will use overlay.
+
+To run with mods from Steam Library, you can add string into **Properties - Launch Options** of the game:
+**"_your-path-to-steam_\steamapps\common\Unclaimed World\UnclaimedWorldInjector.exe" %command%**
+
+---
+Old description:
+---
 ![alt text](https://github.com/ConfuzzedCat/TerrariaInjector/blob/master/TerrariaInjector_Long.png?raw=true)
 # TerrariaInjector
 #### What is it?
