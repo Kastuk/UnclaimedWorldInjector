@@ -14,7 +14,7 @@ using System.Threading;
 [assembly: AssemblyProduct("UnclaimedWorldInjector")]
 //[assembly: AssemblyCopyright("Copyright (c) 2023 / Confuzzedcat, #d1 & Co.")]
 //[assembly: ComVisible(false)]
-[assembly: AssemblyVersion("7.10.2024")]
+[assembly: AssemblyVersion("2024.10.07")]
 //[assembly: AssemblyFileVersion("1.2.0")]
 [assembly: NeutralResourcesLanguage("en")]
 //[assembly: CLSCompliant(false)]
