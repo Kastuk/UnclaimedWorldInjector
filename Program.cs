@@ -10,23 +10,23 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-[assembly: AssemblyTitle("TerrariaInjector")]
-[assembly: AssemblyProduct("TerrariaInjector")]
-[assembly: AssemblyCopyright("Copyright (c) 2023 / Confuzzedcat, #d1 & Co.")]
-[assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.2.0")]
-[assembly: AssemblyFileVersion("1.2.0")]
+[assembly: AssemblyTitle("Unclaimed World Injector")]
+[assembly: AssemblyProduct("UnclaimedWorldInjector")]
+//[assembly: AssemblyCopyright("Copyright (c) 2023 / Confuzzedcat, #d1 & Co.")]
+//[assembly: ComVisible(false)]
+[assembly: AssemblyVersion("7.10.2024")]
+//[assembly: AssemblyFileVersion("1.2.0")]
 [assembly: NeutralResourcesLanguage("en")]
-[assembly: CLSCompliant(false)]
+//[assembly: CLSCompliant(false)]
 //[assembly: Guid("7A8659F1-61B8-4A3E-9201-000020230303")]
-namespace TerrariaInjector
+namespace UnclaimedWorldInjector
 {
     public static class Program
     {
         [STAThread]
         public static void Main(string[] args)
         {
-            Console.Title = "TerrariaInjector";
+            Console.Title = "UnclaimedWorldInjector";
             AppDomain.CurrentDomain.AssemblyResolve += GM.DependencyResolveEventHandler;
 
             try
@@ -52,14 +52,14 @@ namespace TerrariaInjector
         }
     }
 
-    
+
     public static class GM
     {
         public static readonly string AssemblyFile = Assembly.GetExecutingAssembly().Location;
         public static readonly string AssemblyFolder = Path.GetFullPath(Path.GetDirectoryName(AssemblyFile) + Path.DirectorySeparatorChar);
         public static readonly Core.Logger Logger = new Core.Logger("GM");
         public static void Wait() => Console.ReadKey(true);
-        public static readonly string[] Targets = { "Stardew Valley.exe", "Terraria.exe" };
+        public static readonly string[] Targets = { "Stardew Valley.exe", "UnclaimedWorld.exe" };
         public static int ModCount = 0;
 
         public static void Inject(string[] args)
@@ -93,7 +93,7 @@ namespace TerrariaInjector
             {
                 Logger.Info("Loading: " + file);
                 Assembly asm = Assembly.LoadFile(file);
-                Logger.Debug("Found assembly: " + asm.ToString()); 
+                Logger.Debug("Found assembly: " + asm.ToString());
                 Logger.Debug("AssemblyName: " + asm.GetName()); Logger.Debug("Found assembly: " + asm.ToString());
                 AppDomain.CurrentDomain.Load(asm.GetName());
             }
@@ -148,17 +148,27 @@ namespace TerrariaInjector
                     game = Assembly.Load(memoryStream.GetBuffer());
                 }
             }
-            bool isTerrariaTarget = false;
+            bool isUnclaimedWorldTarget = false;
 
-            if (targetPath.ToLower().EndsWith("terraria.exe") || File.Exists(Path.Combine(AssemblyFolder, "ReLogic.Native.dll")))
-            {
-                string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Terraria");
-                game.GetType("Terraria.Program").GetField("SavePath").SetValue(null, savePath);
-                isTerrariaTarget = true;
-            }
+            //if (targetPath.ToLower().EndsWith("UnclaimedWorld.exe"))// || File.Exists(Path.Combine(AssemblyFolder, "ReLogic.Native.dll")))
+            //{
+            //    string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "UnclaimedWorld");
+            //    game.GetType("UnclaimedWorld.Program").GetField("SavePath").SetValue(null, savePath);
+            //    isUnclaimedWorldTarget = true;
+            //}
 
 
             Logger.Info("Loading game dependencies ...");
+
+            //AssemblyName[] assnam = game.GetReferencedAssemblies();
+            //for (int i = 0; i < assnam.Length; i++)
+            //{
+            //    var ass = assnam[i].Name;// + ".dll";
+            //    Logger.Info("Loading: " + ass);
+            //    Stream input = game.GetManifestResourceStream(ass);
+            //    Assembly.Load(ReadStreamAssembly(input));
+            //}
+
             foreach (var file in game.GetManifestResourceNames())
                 if (file.Contains(".dll"))
                 {
@@ -170,7 +180,7 @@ namespace TerrariaInjector
 
             if (gameAssemblyDef != null)
                 File.Move(targetPath, targetPath + ".bak");
-            Harmony harmony = new Harmony("com.github.confuzzedcat.terraria.terrariainjector");
+            Harmony harmony = new Harmony("com.github.confuzzedcat.UnclaimedWorld.UnclaimedWorldinjector");
             foreach (var mod in modsAssemblies)
             {
                 Logger.Info("Harmony.PatchAll() mod: " + mod.GetName().Name);
@@ -185,12 +195,12 @@ namespace TerrariaInjector
             }
             if (gameAssemblyDef != null)
                 File.Move(targetPath + ".bak", targetPath);
-            
+
             Logger.Debug("Assemblies:");
             Array.ForEach(AppDomain.CurrentDomain.GetAssemblies(), entry =>
             {
                 Logger.Debug($"Loaded: {entry.FullName}");
-                if (entry.FullName.IndexOf("terraria", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                if (entry.FullName.IndexOf("UnclaimedWorld", StringComparison.CurrentCultureIgnoreCase) >= 0)
                     Logger.Debug($"        {entry.CodeBase}");
             });
 
@@ -198,24 +208,28 @@ namespace TerrariaInjector
             foreach (var method in harmony.GetPatchedMethods())
                 Logger.Info($"Patched method: \"{method.Name}\"");
 
-            if (isTerrariaTarget)
-            {
-                try
-                {
-                    ModCountLabel.Patch(game, harmony);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("ModcountLabel failed to patch!", ex);
-                }
-            }
+            //if (isUnclaimedWorldTarget)
+            //{
+            //    try
+            //    {
+            //        ModCountLabel.Patch(game, harmony);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Logger.Error("ModcountLabel failed to patch!", ex);
+            //    }
+            //}
 
             //Logger.Info("Writing patched game to file ...");
             //File.WriteAllBytes(targetPath + ".dump.exe", DumpAssembly(Game));
 
             Logger.Info("Invoke game entry point ...");
             Thread.Sleep(1000);
-            game.EntryPoint.Invoke(null, new object[] { args });
+            if (args.Length > 0)
+            {
+                game.EntryPoint.Invoke(null, new object[] { args });
+            }
+            else game.EntryPoint.Invoke(null, new object[] { });
         }
 
         public static byte[] DumpAssembly(Assembly assembly)
