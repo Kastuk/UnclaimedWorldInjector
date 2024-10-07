@@ -10,7 +10,8 @@ Get this mod and put into **Steam\steamapps\common\Unclaimed World**
 Put dll mods into Mods folder.
 
 Run game from **UnclaimedWorldInjector.exe**
-Can run alongside Steam, it will use overlay.
+
+Can run alongside Steam, it will use overlay and achievements.
 
 ---
 Old description:
